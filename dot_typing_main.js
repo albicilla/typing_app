@@ -113,6 +113,7 @@ phina.define('Word', {
 
     if (this.y > 960) {
       this.flare('attack');
+      AssetManager.get('sound', 'bgm').stop();
       this.remove();
     }
   },

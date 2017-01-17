@@ -1,6 +1,6 @@
 phina.globalize();
 
-var SCREEN_WIDTH    = 640;
+var SCREEN_WIDTH    = 1280;
 var SCREEN_HEIGHT   = 960;
 var PIECE_SIZE      = 130;
 var PIECE_SIZE_HALF = PIECE_SIZE/2;
@@ -8,6 +8,7 @@ var PIECE_SIZE_HALF = PIECE_SIZE/2;
 var ASSETS = {
   sound: {
     'correct': './assets/sounds/correct.mp3',
+    'bgm':'./assets/sounds/bgm_maoudamashii_neorock73.ogg',
   },
 };
 
@@ -38,6 +39,9 @@ phina.define("MainScene", {
 
     this.score = 0;
     this.scoreLabel.text = this.score + '';
+
+    AssetManager.get('sound', 'bgm').play();
+
   },
 
   onkeydown: function(e) {
@@ -46,6 +50,7 @@ phina.define("MainScene", {
     var result = wordGroup.children.some(function(word) {
       if (word.enable && word.text === ch) {
         word.disappear();
+      //word.colorChange();
         return true;
       }
       return false;
@@ -71,10 +76,10 @@ phina.define("MainScene", {
   },
 
   createWord: function() {
-    var ascii = [48,49,50,51,52,53,54,55,56,57,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89];
+    var ascii = [65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89];
 
-    //var ch = String.fromCharCode(ascii.pickup());
-    var ch = String.fromCharCode(65,66,79,85,84);
+    var ch = String.fromCharCode(ascii.pickup());
+    //var ch = String.fromCharCode(65,66,79,85,84);
     var word = Word(ch).addChildTo(this.wordGroup);
     word.x = Math.randint(PIECE_SIZE_HALF, this.gridX.width-PIECE_SIZE_HALF);
     word.y = -100;
@@ -98,12 +103,13 @@ phina.define('Word', {
       width: PIECE_SIZE,
       height: PIECE_SIZE,
       text: word,
+    //  fontColor:'red',
     });
     this.enable = true;
   },
 
   update: function() {
-    this.y += 2;
+    this.y += 8;
 
     if (this.y > 960) {
       this.flare('attack');
@@ -111,13 +117,15 @@ phina.define('Word', {
     }
   },
 
+
+
   disappear: function() {
     this.enable = false;
     this.tweener
       .to({
         scaleX: 2,
         scaleY: 2,
-        alpha: 0,
+
       }, 250)
       .call(function() {
         this.target.remove();

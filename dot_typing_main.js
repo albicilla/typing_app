@@ -9,6 +9,7 @@ var ASSETS = {
   sound: {
     'correct': './assets/sounds/correct.mp3',
     'bgm':'./assets/sounds/bgm_maoudamashii_neorock73.ogg',
+    'se':'./assets/sounds/short_punch1.mp3'
   },
 };
 
@@ -33,9 +34,19 @@ phina.define("MainScene", {
           x: this.gridX.span(15),
           y: this.gridX.span(1),
           align: 'right',
+        },
+        stageLabel:{
+          className:'Label',
+          text:'Stage',
+          x: this.gridX.span(10),
+          y: this.gridX.span(1),
+          align: 'right',
         }
       },
     });
+
+    this.stage = 1;
+    this.stageLabel.text = "stage"+this.stage;
 
     this.score = 0;
     this.scoreLabel.text = this.score + '';
@@ -60,7 +71,7 @@ phina.define("MainScene", {
       this.score += 1;
       this.scoreLabel.text = this.score + '';
 
-      AssetManager.get('sound', 'correct').play();
+      AssetManager.get('sound', 'se').play();
     }
 
     // space if push space
@@ -70,9 +81,13 @@ phina.define("MainScene", {
   },
 
   update: function(app) {
+
+    //stage1
     if (app.frame % 16 === 0) {
       this.createWord();
     }
+
+    //stage2
   },
 
   createWord: function() {
@@ -112,8 +127,8 @@ phina.define('Word', {
     this.y += 8;
 
     if (this.y > 960) {
-      this.flare('attack');
       AssetManager.get('sound', 'bgm').stop();
+      this.flare('attack');
       this.remove();
     }
   },

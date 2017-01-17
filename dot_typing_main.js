@@ -83,12 +83,12 @@ phina.define("MainScene", {
   update: function(app) {
 
     //stage1
-    if (app.frame < 300 &&app.frame > 90 &&app.frame % 20 === 0) {
+    if (this.score < 10&&app.frame % 20 === 0) {
       this.createWord();
     }
 
     //stage2
-    if (app.frame > 350 &&app.frame % 25 === 0) {
+    if (this.score >= 10 &&app.frame % 25 === 0) {
       this.stage=2;
       this.stageLabel.text = "stage"+this.stage;
       this.createWord2();
@@ -211,7 +211,7 @@ phina.define('Word2', {
     this.x += 2;
 
     if(this.x <0 || this.x>1280-PIECE_SIZE_HALF){
-      this.x -= 2;
+      this.x -= 4;
     }
     if (this.y > 960) {
       AssetManager.get('sound', 'bgm').stop();
@@ -254,8 +254,8 @@ phina.define('Word3', {
     this.y += 8;
     this.x -= 2;
 
-    if(this.x <0 || this.x>1280-PIECE_SIZE_HALF){
-      this.x += 2;
+    if(this.x <PIECE_SIZE_HALF || this.x>1280-PIECE_SIZE_HALF){
+      this.x += 4;
     }
     if (this.y > 960) {
       AssetManager.get('sound', 'bgm').stop();
